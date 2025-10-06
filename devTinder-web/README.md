@@ -26,6 +26,7 @@
 - You should not be access other routes without login
 - If token is not present or active, redirect to login page
 - Logout Feature Added
+- Create UserCard & feedSlice & feed
 
 Body
 Navbar
