@@ -8,6 +8,7 @@ import { useNavigate } from "react-router";
 const Login = () => {
   const [emailId, setEmailId] = useState("sharmaji@gmail.com");
   const [password, setPassword] = useState("Sharma@123");
+  const [error, setError] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -24,9 +25,9 @@ const Login = () => {
         }
       );
       dispatch(addUser(result.data));
-      navigate("/feed");
+      navigate("/");
     } catch (err) {
-      console.log("Error: ", err.message);
+      setError(err?.response?.data || "Something Went Wrong");
     }
   };
   return (
@@ -64,6 +65,7 @@ const Login = () => {
               />
             </fieldset>
           </div>
+          <p className="text-rose-600">{error}</p>
           <div className="card-actions justify-center">
             <button className="btn btn-primary" onClick={handleClick}>
               Login

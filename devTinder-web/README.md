@@ -22,3 +22,13 @@
 - Navbar should update as soon as user logs in
 - Add useNavgate in login.jsx with path "/feed"
 - Refactor your code to add constants file + create a components folder
+
+- You should not be access other routes without login
+- If token is not present or active, redirect to login page
+- Logout Feature Added
+
+Body
+Navbar
+Route=/feed => Feed
+Route=/login => Login
+Route=/profile => Profile
