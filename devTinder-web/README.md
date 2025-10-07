@@ -27,6 +27,8 @@
 - If token is not present or active, redirect to login page
 - Logout Feature Added
 - Create UserCard & feedSlice & feed
+- Edit Profile Feature
+- Show Toast Message on save of profile
 
 Body
 Navbar
