@@ -29,6 +29,8 @@
 - Create UserCard & feedSlice & feed
 - Edit Profile Feature
 - Show Toast Message on save of profile
+- New Page - See all my Connections
+- New Page - See all my Requests
 
 Body
 Navbar

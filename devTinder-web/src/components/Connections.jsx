@@ -19,7 +19,7 @@ const Connections = () => {
   };
   useEffect(() => {
     fetchConnection();
-  });
+  }, []);
 
   if (!connections) return;
 
@@ -31,12 +31,15 @@ const Connections = () => {
       </div>
       <div>
         {connections.map((connection) => {
-          const { firstName, lastName, photoUrl } = connection;
+          const { _id, firstName, lastName, photoUrl, about } = connection;
           return (
-            <div className="card card-side bg-base-300 shadow-sm mx-auto w-1/3 my-10  m-2 ">
+            <div
+              key={_id}
+              className="card card-side bg-base-300 shadow-sm mx-auto w-1/3 my-10  m-2 "
+            >
               <figure>
                 <img
-                  className="w-20 h-20 rounded-full mx-4   "
+                  className="w-20 h-20 rounded-full mx-1 mb-20 ml-5  "
                   src={photoUrl}
                   alt="photo"
                 />
@@ -45,6 +48,7 @@ const Connections = () => {
                 <h2 className="card-title text-xl">
                   {firstName + " " + lastName}
                 </h2>
+                <p className="max-w-sm">{about}</p>
                 <div className="card-actions justify-end">
                   <button className="btn btn-primary">Message</button>
                 </div>
