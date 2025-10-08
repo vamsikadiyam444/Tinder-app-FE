@@ -32,11 +32,13 @@ const Navbar = () => {
           💻 DevTinder
         </Link>
       </div>
-      <div>
-        <Link to="/requests" className="px-8 my-2">
-          👤
-        </Link>
-      </div>
+      {user && (
+        <div>
+          <Link to="/requests" className="px-8 my-2">
+            👤
+          </Link>
+        </div>
+      )}
       {user && (
         <div className="flex gap-4 mx-5 ">
           <p className="py-2">Welcome, {user.firstName}</p>

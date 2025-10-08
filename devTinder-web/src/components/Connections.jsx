@@ -31,11 +31,11 @@ const Connections = () => {
         <p>Connections</p>
       </div>
       <div>
-        {connections.map((connection) => {
+        {connections.map((connection, index) => {
           const { _id, firstName, lastName, photoUrl, about } = connection;
           return (
             <div
-              key={_id}
+              key={_id + index}
               className="card card-side bg-base-300 shadow-sm mx-auto w-1/3 my-10  m-2 "
             >
               <figure>
