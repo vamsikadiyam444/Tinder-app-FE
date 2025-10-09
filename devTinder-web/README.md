@@ -40,3 +40,23 @@ Navbar
 Route=/feed => Feed
 Route=/login => Login
 Route=/profile => Profile
+
+# Deployment
+
+- Sign up in aws
+- Launch Instances
+- Do powershell or cmd
+  - chmod 400 <secret>.pem
+  - ssh -i .\devTinder-secret.pem ubuntu@ec2-54-90-119-40.compute-1.amazonaws.com
+  - Install node.js version (in which nodejs version your running - check with node -v)
+  - git clone both frontend and backend
+  - go to frontend (cd/devTinder-web/devTinder-web)
+    - npm install => dependencies install
+    - npm run build
+    - sudo apt update
+    - sudo apt install nginx
+    - sudo systemctl start nginx
+    - sudo systemctl enable nginx
+    - copy code from dist(build files) to /var/www/html/
+    - sudo scp -r dist/\* /var/www/html/
+    - Enable port :80 of your instances
