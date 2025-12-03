@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devtinder-frontend
+  namespace: devtinder
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: devtinder-frontend
+  template:
+    metadata:
+      labels:
+        app: devtinder-frontend
+    spec:
+      containers:
+        - name: frontend
+          image: vamsikrishna212/devtinder-fe:latest
+          ports:
+            - containerPort: 8080
