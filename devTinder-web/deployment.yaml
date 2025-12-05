@@ -15,6 +15,6 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: vamsikrishna212/devtinder-fe:latest
+          image: vamsikrishna212/devtinder-fe:v1
           ports:
             - containerPort: 80
