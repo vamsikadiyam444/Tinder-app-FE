@@ -17,4 +17,4 @@ spec:
         - name: frontend
           image: vamsikrishna212/devtinder-fe:latest
           ports:
-            - containerPort: 8080
+            - containerPort: 80
