@@ -1,9 +1,16 @@
+name: FE CI
+
+on:
+  push:
+    branches:
+      - main
+
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout FE Repo
+      - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Set up Node.js
@@ -11,16 +18,13 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Change to frontend folder
-        run: cd devTinder-web
-
-      - name: Install Dependencies
+      - name: Install dependencies
         run: npm ci
-        working-directory: ./devTinder-web
+        working-directory: devTinder-web
 
-      - name: Build Frontend
+      - name: Build frontend
         run: npm run build
-        working-directory: ./devTinder-web
+        working-directory: devTinder-web
 
       - name: Set up Docker
         uses: docker/setup-buildx-action@v2
@@ -31,8 +35,9 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build Docker Image
-        run: docker build -t vamsikrishna212/devtinder-fe:v1 ./devTinder-web
+      - name: Build Docker image
+        run: docker build -t vamsikrishna212/devtinder-fe:v1 .
+        working-directory: devTinder-web
 
-      - name: Push Docker Image
+      - name: Push Docker image
         run: docker push vamsikrishna212/devtinder-fe:v1
