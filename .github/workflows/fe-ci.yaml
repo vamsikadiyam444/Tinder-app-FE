@@ -5,62 +5,53 @@ on:
     branches:
       - main
 
-env:
-  IMAGE_NAME: vamsikrishna212/devtinder-fe
-
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
 
+    env:
+      IMAGE_NAME: vamsikrishna212/devtinder-fe
+      IMAGE_TAG: v1  # You can change this or generate dynamically
+      PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
+
     steps:
-      # 1️⃣ Checkout code
-      - name: Checkout code
+      - name: Checkout FE Repo
         uses: actions/checkout@v3
 
-      # 2️⃣ Set up Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20'
 
-      # 3️⃣ Install dependencies
       - name: Install dependencies
         run: npm ci
         working-directory: devTinder-web
 
-      # 4️⃣ Build frontend
       - name: Build frontend
         run: npm run build
         working-directory: devTinder-web
 
-      # 5️⃣ Set up Docker
       - name: Set up Docker
         uses: docker/setup-buildx-action@v2
 
-      # 6️⃣ Login to Docker Hub
       - name: Login to Docker Hub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # 7️⃣ Build Docker image
       - name: Build Docker image
-        run: docker build -t $IMAGE_NAME:latest devTinder-web
+        run: docker build -t $IMAGE_NAME:$IMAGE_TAG ./devTinder-web
 
-      # 8️⃣ Push Docker image
       - name: Push Docker image
-        run: docker push $IMAGE_NAME:latest
+        run: docker push $IMAGE_NAME:$IMAGE_TAG
 
-      # 9️⃣ Update k8s deployment manifest with new image
-      - name: Update k8s deployment with new image
+      - name: Update deployment.yaml with new image
         run: |
-          IMAGE_TAG=latest
-          sed -i "s|image: $IMAGE_NAME:.*|image: $IMAGE_NAME:$IMAGE_TAG|g" devTinder-web/k8s/deployment.yaml
           git config user.name "github-actions"
-          git config user.email "actions@github.com"
+          git config user.email "vamsikadiyam444@gmail.com"
+          git remote set-url origin https://x-access-token:$PAT_TOKEN@github.com/vamsikadiyam444/Tinder-app-FE.git
+          sed -i "s|image: $IMAGE_NAME:.*|image: $IMAGE_NAME:$IMAGE_TAG|g" devTinder-web/k8s/deployment.yaml
           git add devTinder-web/k8s/deployment.yaml
           git commit -m "Update FE image to $IMAGE_TAG"
-          git push https://$GH_PAT@github.com/vamsikadiyam444/Tinder-app-FE.git HEAD:main
-        env:
-          GH_PAT: ${{ secrets.GH_PAT }}
+          git push origin main
