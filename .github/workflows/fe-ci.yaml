@@ -13,12 +13,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # -----------------------------
+      # CHECKOUT WITH PAT + OPTIONS
+      # -----------------------------
       - name: Checkout code
         uses: actions/checkout@v3
         with:
-          token: ${{ secrets.PAT_TOKEN }}   # IMPORTANT: Forces using your PAT
-          fetch-depth: 0                   # Needed for git commit/push
+          token: ${{ secrets.PAT_TOKEN }}        # REQUIRED for git push
+          repository: vamsikadiyam444/Tinder-app-FE
+          fetch-depth: 0
+          ssh-strict: true
+          persist-credentials: true
+          clean: true
+          sparse-checkout-cone-mode: true
+          fetch-tags: false
+          lfs: false
+          submodules: false
+          set-safe-directory: true
 
+      # -----------------------------
+      # NODE + BUILD
+      # -----------------------------
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
@@ -32,6 +47,9 @@ jobs:
         run: npm run build
         working-directory: devTinder-web
 
+      # -----------------------------
+      # DOCKER BUILD & PUSH
+      # -----------------------------
       - name: Set up Docker
         uses: docker/setup-buildx-action@v2
 
@@ -51,6 +69,9 @@ jobs:
       - name: Push Docker image
         run: docker push $IMAGE_NAME:$IMAGE_TAG
 
+      # -----------------------------
+      # UPDATE K8S DEPLOYMENT & PUSH
+      # -----------------------------
       - name: Update Kubernetes deployment.yaml with new image
         run: |
           git config user.name "github-actions"
@@ -62,7 +83,7 @@ jobs:
 
           if ! git diff --cached --quiet; then
             git commit -m "Update FE image to $IMAGE_TAG"
-            git push origin main     # ✔ Works because checkout used PAT
+            git push origin main
           else
             echo "No changes to commit"
           fi
